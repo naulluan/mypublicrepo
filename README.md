@@ -20,3 +20,5 @@ module "karpenter" {
   aws_iam_instance_profile_name      = element([for group in module.eks_managed_node_group : group.aws_iam_instance_profile_name], 0)
   tolerations                        = var.tolerations
 }
+
+https://github.com/kubernetes-sigs/kui/releases/download/v13.1.4/Kui-linux-x64.zip
