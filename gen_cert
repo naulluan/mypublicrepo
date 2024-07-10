@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Variables
+CERT_DIR="./certificates"
+CERT_NAME="selfsigned"
+COUNTRY="US"
+STATE="California"
+LOCALITY="San Francisco"
+ORGANIZATION="MyCompany"
+ORG_UNIT="IT"
+COMMON_NAME="mycompany.com"
+EMAIL="admin@mycompany.com"
+DAYS_VALID=365
+
+# Create certificate directory
+mkdir -p $CERT_DIR
+
+# Generate private key
+openssl genpkey -algorithm RSA -out $CERT_DIR/$CERT_NAME.key -aes256
+
+# Create a configuration file for the certificate
+cat > $CERT_DIR/$CERT_NAME.cnf << EOF
+[req]
+distinguished_name = req_distinguished_name
+x509_extensions = v3_req
+prompt = no
+
+[req_distinguished_name]
+C = $COUNTRY
+ST = $STATE
+L = $LOCALITY
+O = $ORGANIZATION
+OU = $ORG_UNIT
+CN = $COMMON_NAME
+emailAddress = $EMAIL
+
+[v3_req]
+keyUsage = keyEncipherment, dataEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName = @alt_names
+
+[alt_names]
+DNS.1 = $COMMON_NAME
+EOF
+
+# Generate a self-signed certificate
+openssl req -x509 -nodes -days $DAYS_VALID -key $CERT_DIR/$CERT_NAME.key -out $CERT_DIR/$CERT_NAME.crt -config $CERT_DIR/$CERT_NAME.cnf
+
+echo "Self-signed certificate created at $CERT_DIR/$CERT_NAME.crt"
+echo "Private key created at $CERT_DIR/$CERT_NAME.key"
