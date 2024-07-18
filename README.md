@@ -23,3 +23,5 @@ module "karpenter" {
 }
 
 https://github.com/kubernetes-sigs/kui/releases/download/v13.1.4/Kui-linux-x64.zip
+
+https://github.com/terraform-docs/terraform-docs/releases/download/v0.18.0/terraform-docs-v0.18.0-linux-amd64.tar.gz
